@@ -19,120 +19,136 @@
 
     <!-- Add your site or application content here -->
     <h1>Dark Heresy</h1>
-    <button onclick="generatePlayer()">Generate new character</button>
-    <h2>Player info</h2>
-    <table>
-        <tr>
-            <td>Character Name</td>
-            <td><span id="charName"></span></td>
-        </tr>
-        <tr>
-            <td>Home World</td>
-            <td><span id="homeWorld"></span></td>
-        </tr>
-        <tr>
-            <td>Career Path</td>
-            <td><span id="careerPath"></span></td>
-        </tr>
-        <tr>
-            <td>Rank</td>
-            <td><span id="rank"></span></td>
-        </tr>
-        <tr>
-            <td>Divination</td>
-            <td><span id="divination"></span></td>
-        </tr>
-        <tr>
-            <td>Quirk</td>
-            <td><span id="quirk"></span></td>
-        </tr>
-        <tr>
-            <td>Gender</td>
-            <td><span id="gender"></span></td>
-        </tr>
-        <tr>
-            <td>Build</td>
-            <td><span id="build"></span></td>
-        </tr>
-        <tr>
-            <td>Height</td>
-            <td><span id="height"></span></td>
-        </tr>
-        <tr>
-            <td>Weight</td>
-            <td><span id="weight"></span></td>
-        </tr>
-        <tr>
-            <td>Skin Colour</td>
-            <td><span id="skinColour"></span></td>
-        </tr>
-        <tr>
-            <td>Hair Colour</td>
-            <td><span id="hairColour"></span></td>
-        </tr>
-        <tr>
-            <td>Eye Colour</td>
-            <td><span id="eyeColour"></span></td>
-        </tr>
-        <tr>
-            <td>Age</td>
-            <td><span id="age"></span></td>
-        </tr>
-    </table>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-success" onclick="generatePlayer()">Generate new character</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h2>Player info</h2>
+            <table>
+                <tr>
+                    <td>Character Name</td>
+                    <td><span id="charName" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Home World</td>
+                    <td><span id="homeWorld" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Career Path</td>
+                    <td><span id="careerPath" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Rank</td>
+                    <td><span id="rank" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Divination</td>
+                    <td><span id="divination" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Quirk</td>
+                    <td><span id="quirk" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td><span id="gender" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Build</td>
+                    <td><span id="build" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Height</td>
+                    <td><span id="height" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Weight</td>
+                    <td><span id="weight" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Skin Colour</td>
+                    <td><span id="skinColour" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Hair Colour</td>
+                    <td><span id="hairColour" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Eye Colour</td>
+                    <td><span id="eyeColour" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Age</td>
+                    <td><span id="age" class="font-weight-bold"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-6">
+            <h2>Characteristics</h2>
+            <table>
+                <tr>
+                    <td>Weapon Skill</td>
+                    <td><span id="weaponSkill" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Ballistic Skill</td>
+                    <td><span id="ballisticSkill" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Strength</td>
+                    <td><span id="strength" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Toughness</td>
+                    <td><span id="toughness" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Agility</td>
+                    <td><span id="agility" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Intelligence</td>
+                    <td><span id="intelligence" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Perception</td>
+                    <td><span id="perception" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Willpower</td>
+                    <td><span id="willpower" class="font-weight-bold"></span></td>
+                </tr>
+                <tr>
+                    <td>Fellowship</td>
+                    <td><span id="fellowship" class="font-weight-bold"></span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-    <h2>Characteristics</h2>
-    <table>
-        <tr>
-            <td>Weapon Skill</td>
-            <td><span id="weaponSkill"></span></td>
-        </tr>
-        <tr>
-            <td>Ballistic Skill</td>
-            <td><span id="ballisticSkill"></span></td>
-        </tr>
-        <tr>
-            <td>Strength</td>
-            <td><span id="strength"></span></td>
-        </tr>
-        <tr>
-            <td>Toughness</td>
-            <td><span id="toughness"></span></td>
-        </tr>
-        <tr>
-            <td>Agility</td>
-            <td><span id="agility"></span></td>
-        </tr>
-        <tr>
-            <td>Intelligence</td>
-            <td><span id="intelligence"></span></td>
-        </tr>
-        <tr>
-            <td>Perception</td>
-            <td><span id="perception"></span></td>
-        </tr>
-        <tr>
-            <td>Willpower</td>
-            <td><span id="willpower"></span></td>
-        </tr>
-        <tr>
-            <td>Fellowship</td>
-            <td><span id="fellowship"></span></td>
-        </tr>
-    </table>
+    <div class="row">
+        <div class="col-6">
+            <h2>Basic skills</h2>
+            <table>
 
-    <h2>Basic skills</h2>
-    <table>
+            </table>
+        </div>
 
-    </table>
+        <div class="col-6">
+            <h2>Advanced skills</h2>
+            <table>
 
-    <h2>Advanced skills</h2>
-    <table>
-
-    </table>
+            </table>
+        </div>
+    </div>
 </div>
 
 
 <script src="js/generator.js"></script>
+<script>generatePlayer();</script>
 </body>
 
 </html>

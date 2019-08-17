@@ -351,7 +351,8 @@ class Career {
  */
 class Characteristic {
 
-    constructor() {
+    constructor(name) {
+        this.name = name;
         this.base = 0;
         this.worldModifier = 0;
     }
@@ -392,15 +393,15 @@ class Characteristic {
  */
 class Characteristics {
     constructor() {
-        this.weaponSkill = new Characteristic();
-        this.ballisticSkill = new Characteristic();
-        this.strength = new Characteristic();
-        this.toughness = new Characteristic();
-        this.agility = new Characteristic();
-        this.intelligence = new Characteristic();
-        this.perception = new Characteristic();
-        this.willpower = new Characteristic();
-        this.fellowship = new Characteristic();
+        this.weaponSkill = new Characteristic('Weapon Skill');
+        this.ballisticSkill = new Characteristic('Ballistic Skill');
+        this.strength = new Characteristic('Strength');
+        this.toughness = new Characteristic('Toughness');
+        this.agility = new Characteristic('Agility');
+        this.intelligence = new Characteristic('Intelligence');
+        this.perception = new Characteristic('Perception');
+        this.willpower = new Characteristic('Willpower');
+        this.fellowship = new Characteristic('Fellowship');
     }
 
     /**
@@ -689,7 +690,6 @@ function setSpanText(spanId, value) {
 function generatePlayer() {
     const player = new Player();
     player.generateCharacter();
-    console.log(player);
 
     setSpanText('homeWorld', player.homeWorld);
     setSpanText('careerPath', player.career.careerPath);
@@ -713,13 +713,4 @@ function generatePlayer() {
     characteristics.forEach(char => {
        setSpanText(char, `${player.characteristics[char].getValue()} (${player.characteristics[char].getSignificance()})`);
     });
-    // setSpanText('weaponSkill', `${player.characteristics.weaponSkill.getValue()} `);
-    // setSpanText('ballisticSkill', player.characteristics.ballisticSkill.getValue());
-    // setSpanText('strength', player.characteristics.strength.getValue());
-    // setSpanText('toughness', player.characteristics.toughness.getValue());
-    // setSpanText('agility', player.characteristics.agility.getValue());
-    // setSpanText('intelligence', player.characteristics.intelligence.getValue());
-    // setSpanText('perception', player.characteristics.perception.getValue());
-    // setSpanText('willpower', player.characteristics.willpower.getValue());
-    // setSpanText('fellowship', player.characteristics.fellowship.getValue());
 }
