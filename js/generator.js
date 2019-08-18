@@ -1,15 +1,31 @@
 /**
+ * n-sided dice.
+ *
+ * @param sides
+ */
+function dn(sides) {
+    return Math.floor(Math.random() * sides) + 1;
+}
+
+/**
  * 100-sided dice.
  */
 function d100() {
-    return Math.floor(Math.random() * 100) + 1;
+    return dn(100);
 }
 
 /**
  * 10-sided dice.
  */
 function d10() {
-    return Math.floor(Math.random() * 10) + 1;
+    return dn(10);
+}
+
+/**
+ * 5-sided dice.
+ */
+function d5() {
+    return dn(5);
 }
 
 /**
@@ -28,6 +44,14 @@ const Genders = {
     Male: 'Male',
     Female: 'Female'
 };
+
+function _namesByGender() {
+    const names = {};
+    names[Genders.Male] = maleNames;
+    names[Genders.Female] = femaleNames;
+    return names;
+}
+const Names = _namesByGender();
 
 /**
  * Possible career paths.
@@ -63,6 +87,207 @@ function _careerPathRanks() {
     return ranks;
 }
 const CareerPathRanks = _careerPathRanks();
+
+function _careerPathStartingSkills() {
+    const startingSkills = {};
+    startingSkills[CareerPathNames.Adept] = [
+        Skills.SpeakLanguage.withDetail('Low Gothic'),
+        Skills.Literacy,
+        [Skills.Trade.withDetail('Copyist'), Skills.Trade.withDetail('Valet')],
+        Skills.CommonLore.withDetail('Imperium'),
+        [Skills.ScholasticLore.withDetail('Legend'), Skills.CommonLore.withDetail('Tech')]
+    ];
+    startingSkills[CareerPathNames.Arbitrator] = [
+        Skills.SpeakLanguage.withDetail('Low Gothic'),
+        Skills.Literacy,
+        Skills.CommonLore.withDetail('Adeptus Arbites'),
+        Skills.CommonLore.withDetail('Imperium'),
+        Skills.Inquiry
+    ];
+    startingSkills[CareerPathNames.Assassin] = [
+        Skills.SpeakLanguage.withDetail('Low Gothic'),
+        Skills.Awareness,
+        Skills.Dodge
+    ];
+    startingSkills[CareerPathNames.Cleric] = [
+        Skills.SpeakLanguage.withDetail('Low Gothic'),
+        Skills.CommonLore.withDetail('Imperial Creed'),
+        Skills.Literacy,
+        [Skills.Performer.withDetail('Singer'), Skills.Trade.withDetail('Copyist')],
+        [Skills.Trade.withDetail('Cook'), Skills.Trade.withDetail('Valet')],
+    ];
+    startingSkills[CareerPathNames.Guardsman] = [
+        Skills.SpeakLanguage.withDetail('Low Gothic'),
+        [Skills.Drive.withDetail('Ground Vehicle'), Skills.Swim]
+    ];
+    startingSkills[CareerPathNames.ImperialPsyker] = [
+        Skills.SpeakLanguage.withDetail('Low Gothic'),
+        Skills.Psyniscience,
+        Skills.Invocation,
+        [Skills.Trade.withDetail('Merchant'), Skills.Trade.withDetail('Soothsayer')],
+        Skills.Literacy
+    ];
+    startingSkills[CareerPathNames.Scum] = [
+        Skills.SpeakLanguage.withDetail('Low Gothic'),
+        Skills.Blather,
+        [Skills.Charm, Skills.Dodge],
+        Skills.Deceive,
+        Skills.Awareness,
+        Skills.CommonLore.withDetail('Imperium')
+    ];
+    startingSkills[CareerPathNames.TechPriest] = [
+        Skills.SpeakLanguage.withDetail('Low Gothic'),
+        Skills.TechUse,
+        Skills.Literacy,
+        Skills.SecretTongue.withDetail('Tech'),
+        [Skills.Trade.withDetail('Scrimshawer'), Skills.Trade.withDetail('Copyist')]
+    ];
+    return startingSkills;
+}
+
+/**
+ * Contains starting skills for every career path. If there's an array instead
+ * of one skill, it means that there's a possiblity to choose from starting skills.
+ */
+const CareerPathStartingSkills = _careerPathStartingSkills();
+
+/**
+ * Class for players career.
+ */
+class Career {
+
+    constructor() {
+        this.careerPath= '';
+        this.rank = '';
+    }
+
+    /**
+     * Generates the career path and starting rank for given homeworld.
+     *
+     * @param homeWorld
+     */
+    generateCareerPath(homeWorld) {
+        const roll = d100();
+        switch (homeWorld) {
+            case Worlds.Feral:
+                this.generateFeralWorldCareerPath(roll);
+                break;
+
+            case Worlds.Hive:
+                this.generateHiveWorldCareerPath(roll);
+                break;
+
+            case Worlds.Imperial:
+                this.generateImperialWorldCareerPath(roll);
+                break;
+
+            case Worlds.VoidBorn:
+                this.generateVoidBornCareerPath(roll);
+                break;
+        }
+
+        this.rank = CareerPathRanks[this.careerPath][0];
+    }
+
+    /**
+     * Generates career path for given roll value for Feral World.
+     *
+     * @param rollValue Number in range 1-100.
+     */
+    generateFeralWorldCareerPath(rollValue) {
+        if (rollValue < 31) {
+            this.careerPath = CareerPathNames.Assassin;
+        } else if (rollValue < 81) {
+            this.careerPath = CareerPathNames.Guardsman;
+        } else if (rollValue < 91) {
+            this.careerPath = CareerPathNames.ImperialPsyker;
+        } else {
+            this.careerPath = CareerPathNames.Scum;
+        }
+    }
+
+    /**
+     * Generates career path for given roll value for Hive World.
+     *
+     * @param rollValue Number in range 1-100.
+     */
+    generateHiveWorldCareerPath(rollValue) {
+        if (rollValue < 18) {
+            this.careerPath = CareerPathNames.Arbitrator;
+        } else if (rollValue < 21) {
+            this.careerPath = CareerPathNames.Assassin
+        } else if (rollValue < 26) {
+            this.careerPath = CareerPathNames.Cleric;
+        } else if (rollValue < 36) {
+            this.careerPath = CareerPathNames.Guardsman;
+        } else if (rollValue < 41) {
+            this.careerPath = CareerPathNames.ImperialPsyker;
+        } else if (rollValue < 90) {
+            this.careerPath = CareerPathNames.Scum;
+        } else {
+            this.careerPath = CareerPathNames.TechPriest;
+        }
+    }
+
+    /**
+     * Generates career path for given roll value for Imperial World.
+     *
+     * @param rollValue Number in range 1-100.
+     */
+    generateImperialWorldCareerPath(rollValue) {
+        if (rollValue < 13) {
+            this.careerPath = CareerPathNames.Adept;
+        } else if (rollValue < 26) {
+            this.careerPath = CareerPathNames.Arbitrator;
+        } else if (rollValue < 39) {
+            this.careerPath = CareerPathNames.Assassin
+        } else if (rollValue < 53) {
+            this.careerPath = CareerPathNames.Cleric;
+        } else if (rollValue < 66) {
+            this.careerPath = CareerPathNames.Guardsman;
+        } else if (rollValue < 80) {
+            this.careerPath = CareerPathNames.ImperialPsyker;
+        } else if (rollValue < 91) {
+            this.careerPath = CareerPathNames.Scum;
+        } else {
+            this.careerPath = CareerPathNames.TechPriest;
+        }
+    }
+
+    /**
+     * Generates career path for given roll value for Void Born.
+     *
+     * @param rollValue Number in range 1-100.
+     */
+    generateVoidBornCareerPath(rollValue) {
+        if (rollValue < 11) {
+            this.careerPath = CareerPathNames.Adept;
+        } else if (rollValue < 21) {
+            this.careerPath = CareerPathNames.Arbitrator;
+        } else if (rollValue < 26) {
+            this.careerPath = CareerPathNames.Assassin
+        } else if (rollValue < 36) {
+            this.careerPath = CareerPathNames.Cleric;
+        } else if (rollValue < 76) {
+            this.careerPath = CareerPathNames.ImperialPsyker;
+        } else if (rollValue < 86) {
+            this.careerPath = CareerPathNames.Scum;
+        } else {
+            this.careerPath = CareerPathNames.TechPriest;
+        }
+    }
+}
+
+function _fatePointsByWorld() {
+    const fatePoints = {};
+    fatePoints[Worlds.Feral] = [1, 2, 2];
+    fatePoints[Worlds.Hive] = [1, 2, 3];
+    fatePoints[Worlds.Imperial] = [2, 2, 3];
+    fatePoints[Worlds.VoidBorn] = [2, 3, 3];
+
+    return fatePoints;
+}
+const FatePoints = _fatePointsByWorld();
 
 class Build {
     constructor(description, maleHeightWeight, femaleHeightWeight) {
@@ -220,269 +445,44 @@ const Divinations = [
 ];
 
 /**
- * Class for players career.
+ * Players wounds.
  */
-class Career {
+class Wounds {
 
     constructor() {
-        this.careerPath= '';
-        this.rank = '';
+        this.wounds = [];
     }
 
     /**
-     * Generates the career path and starting rank for given homeworld.
-     *
-     * @param homeWorld
-     */
-    generateCareerPath(homeWorld) {
-        const roll = d100();
-        switch (homeWorld) {
-            case Worlds.Feral:
-                this.generateFeralWorldCareerPath(roll);
-                break;
-
-            case Worlds.Hive:
-                this.generateHiveWorldCareerPath(roll);
-                break;
-
-            case Worlds.Imperial:
-                this.generateImperialWorldCareerPath(roll);
-                break;
-
-            case Worlds.VoidBorn:
-                this.generateVoidBornCareerPath(roll);
-                break;
-        }
-
-        this.rank = CareerPathRanks[this.careerPath][0];
-    }
-
-    /**
-     * Generates career path for given roll value for Feral World.
-     *
-     * @param rollValue Number in range 1-100.
-     */
-    generateFeralWorldCareerPath(rollValue) {
-        if (rollValue < 31) {
-            this.careerPath = CareerPathNames.Assassin;
-        } else if (rollValue < 81) {
-            this.careerPath = CareerPathNames.Guardsman;
-        } else if (rollValue < 91) {
-            this.careerPath = CareerPathNames.ImperialPsyker;
-        } else {
-            this.careerPath = CareerPathNames.Scum;
-        }
-    }
-
-    /**
-     * Generates career path for given roll value for Hive World.
-     *
-     * @param rollValue Number in range 1-100.
-     */
-    generateHiveWorldCareerPath(rollValue) {
-        if (rollValue < 18) {
-            this.careerPath = CareerPathNames.Arbitrator;
-        } else if (rollValue < 21) {
-            this.careerPath = CareerPathNames.Assassin
-        } else if (rollValue < 26) {
-            this.careerPath = CareerPathNames.Cleric;
-        } else if (rollValue < 36) {
-            this.careerPath = CareerPathNames.Guardsman;
-        } else if (rollValue < 41) {
-            this.careerPath = CareerPathNames.ImperialPsyker;
-        } else if (rollValue < 90) {
-            this.careerPath = CareerPathNames.Scum;
-        } else {
-            this.careerPath = CareerPathNames.TechPriest;
-        }
-    }
-
-    /**
-     * Generates career path for given roll value for Imperial World.
-     *
-     * @param rollValue Number in range 1-100.
-     */
-    generateImperialWorldCareerPath(rollValue) {
-        if (rollValue < 13) {
-            this.careerPath = CareerPathNames.Adept;
-        } else if (rollValue < 26) {
-            this.careerPath = CareerPathNames.Arbitrator;
-        } else if (rollValue < 39) {
-            this.careerPath = CareerPathNames.Assassin
-        } else if (rollValue < 53) {
-            this.careerPath = CareerPathNames.Cleric;
-        } else if (rollValue < 66) {
-            this.careerPath = CareerPathNames.Guardsman;
-        } else if (rollValue < 80) {
-            this.careerPath = CareerPathNames.ImperialPsyker;
-        } else if (rollValue < 91) {
-            this.careerPath = CareerPathNames.Scum;
-        } else {
-            this.careerPath = CareerPathNames.TechPriest;
-        }
-    }
-
-    /**
-     * Generates career path for given roll value for Void Born.
-     *
-     * @param rollValue Number in range 1-100.
-     */
-    generateVoidBornCareerPath(rollValue) {
-        if (rollValue < 11) {
-            this.careerPath = CareerPathNames.Adept;
-        } else if (rollValue < 21) {
-            this.careerPath = CareerPathNames.Arbitrator;
-        } else if (rollValue < 26) {
-            this.careerPath = CareerPathNames.Assassin
-        } else if (rollValue < 36) {
-            this.careerPath = CareerPathNames.Cleric;
-        } else if (rollValue < 76) {
-            this.careerPath = CareerPathNames.ImperialPsyker;
-        } else if (rollValue < 86) {
-            this.careerPath = CareerPathNames.Scum;
-        } else {
-            this.careerPath = CareerPathNames.TechPriest;
-        }
-    }
-}
-
-/**
- * One particular characteristic.
- */
-class Characteristic {
-
-    constructor(name) {
-        this.name = name;
-        this.base = 0;
-        this.worldModifier = 0;
-    }
-
-    getValue() {
-        return this.base + this.worldModifier;
-    }
-
-    /**
-     * Returns the description of this characteristic.
-     */
-    getSignificance() {
-        const value = this.getValue();
-        if (value < 10) {
-            return 'n00b';
-        } else if (value < 15) {
-            return 'Feeble';
-        } else if (value < 20) {
-            return 'Inferior';
-        } else if (value < 35) {
-            return 'Average';
-        } else if (value < 40) {
-            return 'Superior';
-        } else if (value < 45) {
-            return 'Great';
-        } else if (value < 50) {
-            return 'Magnificent';
-        } else {
-            return 'Heroic';
-        }
-    }
-
-}
-
-
-/**
- * A set of characteristics.
- */
-class Characteristics {
-    constructor() {
-        this.weaponSkill = new Characteristic('Weapon Skill');
-        this.ballisticSkill = new Characteristic('Ballistic Skill');
-        this.strength = new Characteristic('Strength');
-        this.toughness = new Characteristic('Toughness');
-        this.agility = new Characteristic('Agility');
-        this.intelligence = new Characteristic('Intelligence');
-        this.perception = new Characteristic('Perception');
-        this.willpower = new Characteristic('Willpower');
-        this.fellowship = new Characteristic('Fellowship');
-    }
-
-    /**
-     * Sets modifiers for all characteristics, order is:
-     * Weapon Skill, Ballistic Skill, Strength, Toughness,
-     * Agility, Intelligence, Perception, Willpower, Fellowship.
-     *
-     * @param modifiers Array with modifiers.
-     */
-    setModifiers(modifiers) {
-        this.weaponSkill.worldModifier = modifiers[0];
-        this.ballisticSkill.worldModifier = modifiers[1];
-        this.strength.worldModifier = modifiers[2];
-        this.toughness.worldModifier = modifiers[3];
-        this.agility.worldModifier = modifiers[4];
-        this.intelligence.worldModifier = modifiers[5];
-        this.perception.worldModifier = modifiers[6];
-        this.willpower.worldModifier = modifiers[7];
-        this.fellowship.worldModifier = modifiers[8];
-    }
-
-    /**
-     * Generates characteristics for given world.
-     *
-     * @param world World to generate characteristics for.
+     * Generates empty slots for wounds.
+     * @param world Character's home world.
      */
     generateForWorld(world) {
-        this.asArray().forEach(char => {
-            char.base = d10() + d10();
-            console.debug(`${char.name} roll: ${char.base}`);
-        });
+        const roll = d5();
+        console.debug(`Wounds roll: ${roll}`);
+        let base = 0;
         switch (world) {
             case Worlds.Feral:
-                this.setFeralWorldModifiers();
+                base = 9;
                 break;
 
             case Worlds.Hive:
-                this.setHiveWorldModifiers();
+                base = 8;
                 break;
 
             case Worlds.Imperial:
-                this.setImperialWorldModifiers();
+                base = 8;
                 break;
 
             case Worlds.VoidBorn:
-                this.setVoidBornModifiers();
+                base = 6;
                 break;
         }
-    }
 
-    setFeralWorldModifiers() {
-        this.setModifiers([20,20,25,25,20,20,20,15,15]);
-    }
-
-    setHiveWorldModifiers() {
-        this.setModifiers([20,20,20,15,20,20,20,20,25]);
-    }
-
-    setImperialWorldModifiers() {
-        this.setModifiers([20,20,20,20,20,20,20,20,20]);
-    }
-
-    setVoidBornModifiers() {
-        this.setModifiers([20,20,15,20,20,20,20,25,20]);
-    }
-
-    /**
-     * Returns characteristics as array.
-     */
-    asArray() {
-        return [
-            this.weaponSkill,
-            this.ballisticSkill,
-            this.strength,
-            this.toughness,
-            this.agility,
-            this.intelligence,
-            this.perception,
-            this.willpower,
-            this.fellowship
-        ];
+        this.wounds = [];
+        for(let i = 0; i < roll+base; i++){
+            this.wounds.push('');
+        }
     }
 }
 
@@ -502,6 +502,9 @@ class Player {
         this.eyeColour = '';
         this.age = {description: '', value: ''};
         this.characteristics = new Characteristics();
+        this.wounds = new Wounds();
+        this.fatePoints = 0;
+        this.skillSet = [];
     }
 
     /**
@@ -518,8 +521,11 @@ class Player {
 
         // 3. generate the career path
         this.career.generateCareerPath(this.homeWorld);
+        this.generateStartingSkills();
 
         // 4. stats and equip
+        this.wounds.generateForWorld(this.homeWorld);
+        this.generateFatePoints();
 
         // 5. basic info
         this.generateBasicInfo();
@@ -550,11 +556,50 @@ class Player {
     }
 
     /**
+     * Generates starting skills accordingly to the career path.
+     */
+    generateStartingSkills() {
+        CareerPathStartingSkills[this.career.careerPath].forEach(startingSkill => {
+           if (Array.isArray(startingSkill)) {
+                console.debug(`Choosing from ${startingSkill}`);
+                const choice = dn(startingSkill.length) - 1;
+                this.skillSet.push(startingSkill[choice]);
+           } else {
+               this.skillSet.push(startingSkill);
+           }
+        });
+    }
+
+    generateFatePoints() {
+        const roll = d10();
+        console.debug(`Fate points roll: ${roll}`);
+
+        this.fatePoints = FatePoints[this.homeWorld][(roll - 1) / 3];
+    }
+
+    /**
      * Generates basic info such as name, appearance, gender, ...
      */
     generateBasicInfo() {
         this.generateGender();
+        this.generateName();
         this.generateAppearance();
+    }
+
+    generateName() {
+        const roll1 = d100();
+        const roll2 = d5();
+
+        console.debug(`Name roll 1: ${roll1}`);
+        console.debug(`Name roll 2: ${roll2}`);
+
+        let nameNum = 0;
+        let nameRollBoundaries = [4,7,10,14,17,21,24,28,31,34,38,41,45,48,51,55,58,61,64,67,70,73,76,80,83,86,90,94,97,101];
+        while(roll1 >= nameRollBoundaries[nameNum]) {
+            nameNum++;
+        }
+
+        this.characterName = Names[this.gender][roll2 - 1][nameNum];
     }
 
     generateGender() {
@@ -582,7 +627,6 @@ class Player {
         this.generateQuirk();
         this.generateDivination();
     }
-
 
     generateAge() {
         const roll1 = d100();
@@ -660,8 +704,8 @@ class Player {
         const roll = d100();
         console.debug(`Appearance - quirk roll: ${roll}`);
         let quirkNum = 0;
-        const rollBoundaries = [7,14,21,28,35,42,49,56,62,69,76,83,88,89,96,101];
-        while (roll >= rollBoundaries[quirkNum]) {
+        const quirkRollBoundaries = [7,14,21,28,35,42,49,56,62,69,76,83,88,89,96,101];
+        while (roll >= quirkRollBoundaries[quirkNum]) {
             quirkNum++;
         }
         this.quirk = Quirks[this.homeWorld][quirkNum];
@@ -684,6 +728,17 @@ function setSpanText(spanId, value) {
     document.getElementById(spanId).innerText = value;
 }
 
+function setSkillElement(elemId) {
+    document.getElementById(elemId).className = "bg-primary";
+}
+
+function resetSkillElement(elemId) {
+    const elem = document.getElementById(elemId);
+    if (elem !== null) {
+        document.getElementById(elemId).className = "";
+    }
+}
+
 /**
  * Generates new player.
  */
@@ -691,6 +746,7 @@ function generatePlayer() {
     const player = new Player();
     player.generateCharacter();
 
+    setSpanText('characterName', player.characterName);
     setSpanText('homeWorld', player.homeWorld);
     setSpanText('careerPath', player.career.careerPath);
     setSpanText('rank', player.career.rank);
@@ -713,4 +769,23 @@ function generatePlayer() {
     characteristics.forEach(char => {
        setSpanText(char, `${player.characteristics[char].getValue()} (${player.characteristics[char].getSignificance()})`);
     });
+
+    // reset all skill elements
+    Object.keys(Skills).forEach(key => {
+        resetSkillElement(`${Skills[key].id}0`);
+        resetSkillElement(`${Skills[key].id}1`);
+        resetSkillElement(`${Skills[key].id}2`);
+    })
+
+    // basic skills
+    player.skillSet.forEach(skill => {
+        const id = `${skill.id}${skill.level}`;
+        setSkillElement(id);
+        if (skill.detail) {
+            const detailId = `${skill.id}Detail`;
+            setSpanText(detailId, skill.detail);
+        }
+
+    });
+
 }
