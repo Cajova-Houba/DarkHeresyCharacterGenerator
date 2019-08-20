@@ -1,4 +1,8 @@
 /**
+ * This script contains all logic behind generating the character and displaying the data on the page.
+ */
+
+/**
  * n-sided dice.
  *
  * @param sides
@@ -772,6 +776,9 @@ function generatePlayer() {
 
     // reset all skill elements
     Object.keys(Skills).forEach(key => {
+        if (Skills[key].type === SkillType.Advanced) {
+            setSpanText(`${Skills[key].id}Detail`, '');
+        }
         resetSkillElement(`${Skills[key].id}0`);
         resetSkillElement(`${Skills[key].id}1`);
         resetSkillElement(`${Skills[key].id}2`);
@@ -783,7 +790,7 @@ function generatePlayer() {
         setSkillElement(id);
         if (skill.detail) {
             const detailId = `${skill.id}Detail`;
-            setSpanText(detailId, skill.detail);
+            setSpanText(detailId, `(${skill.detail})`);
         }
 
     });
