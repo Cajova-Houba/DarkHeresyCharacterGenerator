@@ -728,6 +728,12 @@ class Player {
     }
 }
 
+
+/**
+ * Globally accessible player object.
+ */
+let player = new Player();
+
 function setSpanText(spanId, value) {
     document.getElementById(spanId).innerText = value;
 }
@@ -747,7 +753,7 @@ function resetSkillElement(elemId) {
  * Generates new player.
  */
 function generatePlayer() {
-    const player = new Player();
+    player = new Player();
     player.generateCharacter();
 
     setSpanText('characterName', player.characterName);
@@ -794,5 +800,21 @@ function generatePlayer() {
         }
 
     });
+}
 
+/**
+ * Exports player to JSON file.
+ */
+function playerToJson() {
+    let dataStr = JSON.stringify(player);
+    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+    let exportFileDefaultName = 'player.json';
+
+    let linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    document.body.appendChild(linkElement);
+    linkElement.click();
+    document.body.removeChild(linkElement);
 }

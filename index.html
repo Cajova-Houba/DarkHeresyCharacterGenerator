@@ -9,25 +9,31 @@
 
     <meta name="theme-color" content="#fafafa">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <div class="container">
     <!--[if IE]>
-    <p class="alert alert-warning">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <p class="alert alert-warning">
+        You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.
+    </p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
     <h1>Dark Heresy</h1>
     <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <button class="btn btn-success" onclick="generatePlayer()">Generate new character</button>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-primary" onclick="playerToJson()">Export to json</button>
         </div>
     </div>
     <div class="row">
         <div class="col-6">
             <h2>Player info</h2>
-            <table>
+            <table class="wide-table-col">
                 <tr>
                     <td>Character Name</td>
                     <td><span id="characterName" class="font-weight-bold"></span></td>
@@ -88,7 +94,7 @@
         </div>
         <div class="col-6">
             <h2>Characteristics</h2>
-            <table>
+            <table class="wide-table-col">
                 <tr>
                     <td>Weapon Skill</td>
                     <td><span id="weaponSkill" class="font-weight-bold"></span></td>
@@ -132,7 +138,7 @@
     <div class="row">
         <div class="col-6">
             <h2>Basic skills</h2>
-            <table>
+            <table class="wide-table-col">
                 <tr>
                     <td></td>
                     <td>Skilled</td>
@@ -264,10 +270,10 @@
 
         <div class="col-6">
             <h2>Advanced skills</h2>
-            <table>
+            <table class="wide-table-col">
                 <tr>
                     <td></td>
-                    <td class="font-italic">Detail</td>
+                    <td class="font-italic"></td>
                     <td>Skilled</td>
                     <td>+10</td>
                     <td>+20</td>
