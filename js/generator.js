@@ -769,7 +769,7 @@ function generatePlayer() {
     setSpanText('hairColour', player.hairColour);
     setSpanText('eyeColour', player.eyeColour);
     setSpanText('quirk', player.quirk);
-    setSpanText('divination', player.divination);
+    setSpanText('divination', `"${player.divination}"`);
 
     const characteristics = [
         'weaponSkill', 'ballisticSkill', 'strength',
